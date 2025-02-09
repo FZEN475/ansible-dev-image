@@ -1,8 +1,8 @@
 # ansible-image
 ## Описание
 Образ содержит ansible и утилиты.  
-Файл [inventory.yaml]() вшит в образ.  
-Путь к [inventory.json]() вшит через аргументы сборки.  
+Файл [inventory.yaml](https://github.com/FZEN475/ansible-image/blob/main/inventory.yaml) вшит в образ.  
+Путь к [inventory.json](https://github.com/FZEN475/ansible-image/blob/8f868df6b7ede27289ac161cea250ae7be57f9a2/docker-compose.yml#L8) вшит через аргументы сборки.  
 Общие [библиотеки](https://github.com/FZEN475/ansible-library.git) обновляются при каждом запуске контейнера.  
 Образ размещается локально и дальнейшие плейбуки выполняются с этим образом.  
 
