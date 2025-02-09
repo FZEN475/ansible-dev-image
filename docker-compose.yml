@@ -1,0 +1,19 @@
+
+services:
+  ansible:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        ANSIBLE_INVENTORY_CSP_PATH: "192.168.2.1:/mnt/nas/secrets/inventory.json"
+    image: ansible
+    container_name: ansible
+    environment:
+      ANSIBLE_REPO: "https://github.com/FZEN475/terraform.git"
+    secrets:
+      - id_ed25519
+    restart: no
+
+secrets:
+  id_ed25519:
+    file: /root/.ssh/id_ed25519
