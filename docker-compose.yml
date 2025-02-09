@@ -9,7 +9,7 @@ services:
     image: ansible
     container_name: ansible
     environment:
-      ANSIBLE_REPO: "https://github.com/FZEN475/terraform.git"
+      ANSIBLE_REPO: ""
     secrets:
       - id_ed25519
     restart: no
