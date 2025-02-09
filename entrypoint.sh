@@ -32,4 +32,7 @@ init_ssh_access
 # shellcheck disable=SC2119
 init_ansible
 ansible-lint /source/playbook.yaml
+cat /source/inventory.json
+cat /source/inventory.yaml
+cat /source/playbook.yaml
 ansible-playbook /source/playbook.yaml -i /source/inventory.json -i /source/inventory.yaml
