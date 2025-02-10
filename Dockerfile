@@ -10,7 +10,7 @@ RUN apk add py3-pip python3 openssh-client git && \
     ansible ansible-lint mitogen etcd3 'protobuf<=3.20.1' passlib && \
     ansible-galaxy collection install community.docker ansible.posix kubernetes.core community.general
 
-ADD ./entrypoint.sh ./inventory.yaml /
+ADD ./entrypoint.sh /
 
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]

@@ -1,10 +1,14 @@
 # ansible-image
 ## Описание
-Образ содержит ansible и утилиты.  
-Файл [inventory.yaml](https://github.com/FZEN475/ansible-image/blob/main/inventory.yaml) вшит в образ.  
-Путь к [inventory.json](https://github.com/FZEN475/ansible-image/blob/8f868df6b7ede27289ac161cea250ae7be57f9a2/docker-compose.yml#L8) вшит через аргументы сборки.  
-Общие [библиотеки](https://github.com/FZEN475/ansible-library.git) обновляются при каждом запуске контейнера.  
-Образ размещается локально и дальнейшие плейбуки выполняются с этим образом.  
+* Сборка образа выполняется в github ci и помещается в registry.
+* Для загрузки playbook.yaml требуется указать environment.ANSIBLE_REPO.
+* Образ зависим от файлов inventory.json и inventory.yaml, которые копируются из "безопасного" расположения.
+  * Файлы создаются при выполнении [terraform](https://github.com/FZEN475/terraform).
+  * Путь для скачивания указывается через environment.INVENTORY и environment.STRUCTURE.
+* Образ содержит ansible и утилиты.   
+* Общие [библиотеки](https://github.com/FZEN475/ansible-library.git) 
+  * Загружаются в /source/library при каждом создании контейнера.
+  * Репозиторий библиотек environment.LIBRARY.
 
 ## Подготовка
 ### Требования
@@ -12,18 +16,17 @@
 |:-------|:----------------------------------------------------------------|
 | docker | Локальный или удалённый сервер для сборки и запуска контейнера. | 
 
-| Дополнительно                 | Значение                                    | Comment                                                                                                                                                   |
-|:------------------------------|:--------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| SSH-key "безопасного" сервера | id_ed25519                                  | Нужно поместить в контейнер как секрет                                                                                                                    |
-| ANSIBLE_REPO                  | git url                                     | В docker-compose.yml указать [environment](https://github.com/FZEN475/ansible-image/blob/e7d8970ed49dbe4bc8e40cbc26359a3542e59d54/docker-compose.yml#L12) |
-| inventory.json                | 192.168.2.1:/mnt/nas/secrets/inventory.json | По этому пути должен лежать inventory.json полученный из terraform                                                                                        |
+| Дополнительно             | Значение | Comment                                              |
+|:--------------------------|:---------|:-----------------------------------------------------|
+| environment.ANSIBLE_REPO  | git url  | Репозиторий с playbook.yaml                          |
+| environment.SECURE_SERVER | IP/DNS   | IP или DNS сервера с inventory.json и structure.yaml |
+| environment.INVENTORY     | path     | Расположение inventory.json на "безопасном" сервере  |
+| environment.STRUCTURE     | path     | Расположение structure.yaml на "безопасном" сервере  |
+| environment.LIBRARY       | git url  | Репозиторий с библиотеками ansible                   |
 
 ## Установка
-Запустить docker-compose.yml
 
 ### Дополнительно
-
-
 
 ### Ошибки
 
