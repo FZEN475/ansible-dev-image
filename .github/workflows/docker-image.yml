@@ -26,6 +26,7 @@ jobs:
         password: ${{secrets.GITHUB_TOKEN}}
     - name: Build the Docker image
       run: |
+        env
         docker build . --file Dockerfile --tag ansible:latest
         docker push ghcr.io/<your-GitHub-username>/ansible:latest
 
