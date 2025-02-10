@@ -22,7 +22,9 @@ function init_ansible() {
   git clone "${ANSIBLE_REPO}" /source
   [[ -d  /source/playbooks/library ]] || rm -rf /source/playbooks/library && mkdir -p /source/playbooks/library
   git clone https://github.com/FZEN475/ansible-library.git /source/playbooks/library
-  [[ -f  /inventory.yaml ]] || mv -rf /inventory.yaml /source/
+  cat /inventory.yaml
+  cp -f /inventory.yaml /source/
+  cat /source/inventory.yaml
   scp -O "${ANSIBLE_INVENTORY_CSP_PATH}" /source/
 }
 
@@ -31,8 +33,9 @@ env
 init_ssh_access
 # shellcheck disable=SC2119
 init_ansible
-ansible-lint /source/playbook.yaml
 cat /source/inventory.json
 cat /source/inventory.yaml
 cat /source/playbook.yaml
-ansible-playbook /source/playbook.yaml -i /source/inventory.json -i /source/inventory.yaml
+ansible-lint /source/playbook.yaml
+
+ansible-playbook /source/playbook.yaml -i /source/inventory.json -i /inventory.yaml
