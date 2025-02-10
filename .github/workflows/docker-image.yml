@@ -28,7 +28,7 @@ jobs:
       run: |
         env
         docker build . --file Dockerfile --tag ansible:latest
-        docker push ghcr.io/<your-GitHub-username>/ansible:latest
+        docker push ghcr.io/${{GITHUB_REPOSITORY_OWNER}}/ansible:latest
 
 
 
