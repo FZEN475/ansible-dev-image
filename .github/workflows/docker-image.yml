@@ -30,10 +30,10 @@ jobs:
     - id: tag
       shell: bash
       run: |
-        if [[ ${{github.ref_name}} == pull_request ]]; then
-          "::set-output name=tag::latest"
+        if [[ ${{github.event_name}} == pull_request ]]; then
+          echo "tag=latest" >> "$GITHUB_OUTPUT"
         else
-          "::set-output name=tag::${{github.ref_name}}"
+          echo "tag=${{github.ref_name}}" >> "$GITHUB_OUTPUT"
         fi
     - id: test1
       shell: pwsh
