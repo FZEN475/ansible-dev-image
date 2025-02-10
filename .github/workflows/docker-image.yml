@@ -24,7 +24,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - id: lower-repo
+    - id: test
       shell: pwsh
       run: |
         echo "${{github}}"
