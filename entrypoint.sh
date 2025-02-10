@@ -24,7 +24,7 @@ function init_ansible() {
   git clone https://github.com/FZEN475/ansible-library.git /source/playbooks/library
   cat /inventory.yaml
   cp -f /inventory.yaml /source/
-  cat /source/inventory.yaml
+
   scp -O "${ANSIBLE_INVENTORY_CSP_PATH}" /source/
 }
 
