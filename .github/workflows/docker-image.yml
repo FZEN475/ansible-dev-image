@@ -27,8 +27,17 @@ jobs:
     - id: test
       shell: pwsh
       run: env
-
-
+    - id: tag
+      shell: pwsh
+      run: |
+        if [ ${{github.ref_name}} == pull_request ]; then
+          "::set-output name=tag::latest"
+        else
+          "::set-output name=tag::${{github.ref_name}}"
+        fi
+    - id: test1
+      shell: pwsh
+      run: echo "${{ steps.tag.outputs.tag }}"
 #    - name: 'Login to GitHub Container Registry'
 #      uses: docker/login-action@v1
 #      with:
