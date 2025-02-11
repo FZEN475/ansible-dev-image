@@ -3,25 +3,16 @@ name: Docker Image CI!
 on:
   push:
     branches: [ "dev" ]
-  merge_group:
-    branches: [ "main" ]
-
-env:
-  ACTIONS_RUNNER_DEBUG: true
-  ACTIONS_STEP_DEBUG: true
 
 jobs:
 
   build-test:
-
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       packages: write
       attestations: write
       id-token: write
-
     steps:
     - uses: actions/checkout@v4
     - uses: docker/build-push-action@v3
@@ -31,7 +22,6 @@ jobs:
         
   pull-image:
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       packages: write
