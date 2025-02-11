@@ -16,18 +16,15 @@ function init_ssh_access() {
 
 # shellcheck disable=SC2120
 function init_ansible() {
-  [[ -d  /source ]] || rm -rf /source && mkdir -p /source
-  git clone "${ANSIBLE_REPO}" /source
+  mkdir -p /source
+  git clone "${GIT_EXTRA_PARAM}" "${ANSIBLE_REPO}" /source
   [[ -d  /source/playbooks/library ]] || rm -rf /source/playbooks/library && mkdir -p /source/playbooks/library
   git clone "${LIBRARY}" /source/playbooks/library
-  scp -O "${SECURE_SERVER}:${INVENTORY}" /source/
-  scp -O "${SECURE_SERVER}:${STRUCTURE}" /source/
+    scp -O "${SECURE_SERVER}:${SECURE_PATH}structure.yaml" /source
+    scp -O "${SECURE_SERVER}:${SECURE_PATH}inventory.json" /source
 }
 
-env
-
 init_ssh_access
-# shellcheck disable=SC2119
 init_ansible
 ansible-lint /source/playbook.yaml
-ansible-playbook /source/playbook.yaml -i /source/inventory.json -i /source/inventory.yaml
+ansible-playbook /source/playbook.yaml -i /source/inventory.json -i /source/structure.yaml

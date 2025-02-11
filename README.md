@@ -1,11 +1,11 @@
 # ansible-image
 ## Описание
-* Сборка образа выполняется в github ci и помещается в registry.
+* Образ основан на alpine
+* Образ содержит ansible и утилиты.
 * Для загрузки playbook.yaml требуется указать environment.ANSIBLE_REPO.
-* Образ зависим от файлов inventory.json и inventory.yaml, которые копируются из "безопасного" расположения.
+* Образ зависим от файлов structure.yaml и inventory.json, которые копируются из "безопасного" расположения.
   * Файлы создаются при выполнении [terraform](https://github.com/FZEN475/terraform).
-  * Путь для скачивания указывается через environment.INVENTORY и environment.STRUCTURE.
-* Образ содержит ansible и утилиты.   
+  * Путь для скачивания указывается через environment.SECURE_SERVER и environment.SECURE_PATH. 
 * Общие [библиотеки](https://github.com/FZEN475/ansible-library.git) 
   * Загружаются в /source/library при каждом создании контейнера.
   * Репозиторий библиотек environment.LIBRARY.
@@ -16,19 +16,18 @@
 |:-------|:----------------------------------------------------------------|
 | docker | Локальный или удалённый сервер для сборки и запуска контейнера. | 
 
-| Дополнительно             | Значение | Comment                                              |
-|:--------------------------|:---------|:-----------------------------------------------------|
-| environment.ANSIBLE_REPO  | git url  | Репозиторий с playbook.yaml                          |
-| environment.SECURE_SERVER | IP/DNS   | IP или DNS сервера с inventory.json и structure.yaml |
-| environment.INVENTORY     | path     | Расположение inventory.json на "безопасном" сервере  |
-| environment.STRUCTURE     | path     | Расположение structure.yaml на "безопасном" сервере  |
-| environment.LIBRARY       | git url  | Репозиторий с библиотеками ansible                   |
-
-## Установка
+| Дополнительно               | Значение   | Comment                                                            |
+|:----------------------------|:-----------|:-------------------------------------------------------------------|
+| secrets.id_ed25519          | id_ed25519 | Закрытый ключ "безопасного" сервера                                |
+| environment.ANSIBLE_REPO    | git url    | Репозиторий с playbook.yaml                                        |
+| environment.SECURE_SERVER   | IP/DNS     | IP или DNS "безопасного" сервера с inventory.json и structure.yaml |
+| environment.SECURE_PATH     | path       | Расположение на "безопасном" сервере                               |
+| environment.LIBRARY         | git url    | Репозиторий с библиотеками ansible                                 |
+| environment.GIT_EXTRA_PARAM | -bdev      | Дополнительные параметры git clone                                 |
 
 ### Дополнительно
 
-### Ошибки
+### Заметки
 
 <!DOCTYPE html>
 <table>
