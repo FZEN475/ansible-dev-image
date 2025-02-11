@@ -14,12 +14,19 @@ function init_ssh_access() {
     " > ~/.ssh/config
 }
 
-# shellcheck disable=SC2120
 function init_ansible() {
   mkdir -p /source
-  git clone "${GIT_EXTRA_PARAM}" "${ANSIBLE_REPO}" /source
+  if [[ -z "${GIT_EXTRA_PARAM}" ]]; then
+    git clone "${ANSIBLE_REPO}" /source
+  else
+    git clone "${GIT_EXTRA_PARAM}" "${ANSIBLE_REPO}" /source
+  fi
   [[ -d  /source/playbooks/library ]] || rm -rf /source/playbooks/library && mkdir -p /source/playbooks/library
-  git clone "${LIBRARY}" /source/playbooks/library
+  if [[ -z "${GIT_EXTRA_PARAM}" ]]; then
+    git clone "${LIBRARY}" /source/playbooks/library
+  else
+    git clone "${GIT_EXTRA_PARAM}" "${LIBRARY}" /source/playbooks/library
+  fi
     scp -O "${SECURE_SERVER}:${SECURE_PATH}structure.yaml" /source
     scp -O "${SECURE_SERVER}:${SECURE_PATH}inventory.json" /source
 }
