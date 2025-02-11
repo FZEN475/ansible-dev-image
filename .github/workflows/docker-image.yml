@@ -3,19 +3,11 @@ name: Docker Image CI!
 on:
   push:
     branches: [ "dev" ]
-  merge_group:
-    branches: [ "main" ]
-
-env:
-  ACTIONS_RUNNER_DEBUG: true
-  ACTIONS_STEP_DEBUG: true
 
 jobs:
 
   build-test:
-
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       packages: write
