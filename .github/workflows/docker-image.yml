@@ -37,6 +37,7 @@ jobs:
       packages: write
       attestations: write
       id-token: write
+    needs: build-test
     steps:
       - uses: actions/checkout@v4
       - id: test
@@ -66,6 +67,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ steps.lower-repo.outputs.repository }}
-          labels: ${{ steps.tag.outputs.tag }}
+          tags: ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ steps.tag.outputs.tag }}
 
