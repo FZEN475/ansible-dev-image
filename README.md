@@ -1,4 +1,4 @@
-# ansible-image1
+# ansible-image11
 ## Описание
 * Сборка образа выполняется в github ci и помещается в registry.
 * Для загрузки playbook.yaml требуется указать environment.ANSIBLE_REPO.
