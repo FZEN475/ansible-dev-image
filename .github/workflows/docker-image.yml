@@ -24,15 +24,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - id: lower-repo
-      shell: pwsh
-      run: |
-        "::set-output name=repository::$($env:GITHUB_REPOSITORY.ToLowerInvariant())"
     - uses: docker/build-push-action@v3
       with:
         context: .
         push: false
-        tags: ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{github.ref_name}}
         
   pull-image:
     runs-on: ubuntu-latest
@@ -70,6 +65,7 @@ jobs:
           "::set-output name=repository::$($env:GITHUB_REPOSITORY.ToLowerInvariant())"
       - uses: docker/build-push-action@v3
         with:
+          context: .
           push: true
           tags: ghcr.io/${{ steps.lower-repo.outputs.repository }}
           labels: ${{ steps.tag.outputs.tag }}
