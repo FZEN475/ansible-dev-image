@@ -8,7 +8,7 @@ RUN apk add py3-pip python3 openssh-client git && \
     ansible-galaxy collection install community.docker ansible.posix kubernetes.core community.general community.crypto
 
 ADD ./entrypoint.sh /
-ADD ./entrypoint.sh /etc/ansible/ansible.cfg
+ADD ./ansible.cfg /etc/ansible/ansible.cfg
 
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
