@@ -15,6 +15,7 @@ jobs:
       DOCKERFILE_PATH: ./Dockerfile   # <-- здесь указываешь путь к Dockerfile
     permissions:
       contents: read
+      releases: write
       packages: write
       attestations: write
       id-token: write
