@@ -12,9 +12,9 @@ services:
       ANSIBLE_COLLECTION_ACCESS_TOKEN: ${ANSIBLE_COLLECTION_ACCESS_TOKEN}
       
       ANSIBLE_PLAYBOOK_OR_COLLECTION: "image_test.ansible.playbook"
-      ANSIBLE_INVENTORY_FILES_OR_URLS: "https://ansible.home.lan/inventory.json,https://ansible.home.lan/structure.yaml"
+      ANSIBLE_INVENTORY_FILES_OR_URLS: "inventory.json,structure.yaml"
       ANSIBLE_PRIVATE_KEY: "/root/.ssh/id_ed25519"
-      ANSIBLE_EXTRA_FLAGS: "-vvv"
+      ANSIBLE_EXTRA_FLAGS: "-v"
     volumes:
       - /tmp/dev-ansible:/source
     secrets:

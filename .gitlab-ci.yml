@@ -4,15 +4,16 @@ include:
       build-tool: buildah
       build-args: "--storage-driver vfs"
       push-args: "--storage-driver vfs"
-      hadolint-disabled: true
+      hadolint-disabled: false
 
       cosign-strategy: never # Не удалось настроить
 
-      semrel-release-disabled: true
+      semrel-release-disabled: false
       prod-publish-strategy: none
-  #      file: dev-ansible/Dockerfile
-  #      snapshot-image: "$CI_REGISTRY_IMAGE/dev-ansible:$CI_COMMIT_REF_SLUG"
-  #      release-image: "$CI_REGISTRY_IMAGE/dev-ansible:$CI_COMMIT_REF_NAME"
+      release-extra-tags: "latest"
+      
+      sbom-disabled: false
+      trivy-disabled: false
 
   - component: $CI_SERVER_FQDN/library/ci/auto-gitlab@main
     inputs:
@@ -28,8 +29,9 @@ include:
       auto-tag-version-minor: 4
 
       auto-release: true
-      dependencies-jobs:
-        - docker-publish
+      extra-needs-jobs:
+        - job: docker-publish
+          optional: true
 
 stages:
   - build
@@ -58,14 +60,30 @@ stages:
   parallel:
     matrix:
       - DOCKER_FILE: "Dockerfile"
-        DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/dev-ansible:$CI_COMMIT_REF_SLUG"
-        DOCKER_RELEASE_IMAGE: "$CI_REGISTRY_IMAGE/dev-ansible:$CI_COMMIT_REF_NAME"
-      #      - DOCKER_FILE: "back/Dockerfile"
-      #        DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/back:$CI_COMMIT_REF_SLUG"
-      #        DOCKER_RELEASE_IMAGE: "$CI_REGISTRY_IMAGE/back:$CI_COMMIT_REF_NAME"
+        DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/ansible-dev-image:$CI_COMMIT_REF_SLUG"
+        DOCKER_RELEASE_IMAGE: "$CI_REGISTRY_IMAGE/ansible-dev-image:$CI_COMMIT_REF_NAME"
+  after_script:
+    - |
+      case "$CI_JOB_NAME" in
+        *docker-publish*) ;;
+        *) exit 0 ;;
+      esac
+    - |
+      {
+        echo "release_docker_repository=${docker_repository}"
+        echo "release_docker_tag=${$CI_COMMIT_TAG}"
+      } > release_after_script.env
+    - !reference [ .release-docker-template, after_script ]
+
+
+docker-publish:
+  artifacts:
+    reports:
+      dotenv:
+        - release_notes.env
 
 variables:
-  CI_DEBUG_TRACE: "true"
+  CI_DEBUG_TRACE: "false"
   CUSTOM_CA_CERTS: "$CI_SERVER_TLS_CA_FILE"
   DOCKER_COSIGN_PRIVATE_KEY: "/tmp/cosign/tls-combined.pem"
   COSIGN_PASSWORD: ""
