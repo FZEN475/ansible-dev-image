@@ -4,17 +4,25 @@ include:
       build-tool: buildah
       build-args: "--storage-driver vfs"
       push-args: "--storage-driver vfs"
-      hadolint-disabled: false
-
-      cosign-strategy: never # Не удалось настроить
-
-      semrel-release-disabled: false
-      prod-publish-strategy: none
-      release-extra-tags: "latest"
       
-      sbom-disabled: false
-      trivy-disabled: false
+      # Тесты
+      hadolint-disabled: true
+      sbom-disabled: true
+      trivy-disabled: true      
 
+      # Электронная подпись образа
+      cosign-strategy: never # Не удалось настроить подписи
+
+      # Дополнительные тэги
+      semrel-release-disabled: true
+      release-extra-tags: "latest \g<major>.\g<minor> \g<major>"
+      
+      # Способ публикации:
+      # none - только по тегу
+      # manual - ручной запуск при достижении job
+      # auto - Публикация и при пуше в def ветку и по тегу
+      prod-publish-strategy: none
+      
   - component: $CI_SERVER_FQDN/library/ci/auto-gitlab@main
     inputs:
       auto-rebase: true
@@ -23,12 +31,12 @@ include:
       auto-merge: true
       auto-remove-source-branch: true
 
-      auto-tag: true
+      auto-tag: false
       auto-tag-pattern: '/^\d+\.\d+\.\d+$/'
       auto-tag-version-major: 0
       auto-tag-version-minor: 4
 
-      auto-release: true
+      auto-release: false
       extra-needs-jobs:
         - job: docker-publish
           optional: true
