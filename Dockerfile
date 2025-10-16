@@ -22,7 +22,8 @@ RUN apk add --no-cache \
       ansible.posix \
       kubernetes.core \
       community.general \
-      community.crypto
+      community.crypto \
+      community.hashi_vault
 
 COPY entrypoint.sh /
 COPY ansible.cfg /etc/ansible/ansible.cfg
