@@ -20,7 +20,7 @@ RUN apk add --no-cache \
     ansible-galaxy collection install \
       community.docker \
       ansible.posix \
-      kubernetes.core \
+      kubernetes.core:6.2.0 \
       community.general \
       community.crypto \
       community.hashi_vault
