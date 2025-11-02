@@ -1,26 +1,15 @@
 include:
-  - component: $CI_SERVER_FQDN/library/docker-gitlab-template/gitlab-ci-docker@8.0.1
+  - component: $CI_SERVER_FQDN/library/ci/build-docker-image@main
     inputs:
-      build-tool: buildah
-      build-args: "--storage-driver vfs"
-      push-args: "--storage-driver vfs"
-      
       # Тесты
       hadolint-disabled: false
       sbom-disabled: false
       trivy-disabled: false
 
-      # Электронная подпись образа
-      cosign-strategy: never # Не удалось настроить подписи
-
       # Дополнительные тэги
       semrel-release-disabled: false
       release-extra-tags: latest \g<major>.\g<minor> \g<major>
       
-      # Способ публикации:
-      # none - только по тегу
-      # manual - ручной запуск при достижении job
-      # auto - Публикация и при пуше в def ветку и по тегу
       prod-publish-strategy: none
       
   - component: $CI_SERVER_FQDN/library/ci/auto-gitlab@main
@@ -55,44 +44,10 @@ stages:
   - auto-merge
   - auto-release
 
-.docker-base:
-  services:
-    - name: "$TBC_TRACKING_IMAGE"
-      command: ["--service", "docker", "8.0.1"]
-  extends: [ .package-cache ]
-  before_script:
-    - !reference [.install-utility]
-    - !reference [.docker-scripts]
-  tags:
-    - docker-builder
-  parallel:
-    matrix:
-      - DOCKER_FILE: "Dockerfile"
-        DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/ansible-dev-image:$CI_COMMIT_REF_SLUG"
-        DOCKER_RELEASE_IMAGE: "$CI_REGISTRY_IMAGE/ansible-dev-image:$CI_COMMIT_REF_NAME"
-  after_script:
-    - |
-      case "$CI_JOB_NAME" in
-        *docker-publish*) ;;
-        *) exit 0 ;;
-      esac
-    - |
-      {
-        echo "release_docker_repository=${docker_repository}"
-        echo "release_docker_tag=${$CI_COMMIT_TAG}"
-      } > release_after_script.env
-    - !reference [ .release-docker-template, after_script ]
-
-
-docker-publish:
-  artifacts:
-    reports:
-      dotenv:
-        - release_notes.env
-
 variables:
   CI_DEBUG_TRACE: "false"
   CUSTOM_CA_CERTS: "$CI_SERVER_TLS_CA_FILE"
-  DOCKER_COSIGN_PRIVATE_KEY: "/tmp/cosign/tls-combined.pem"
-  COSIGN_PASSWORD: ""
+  DOCKER_FILE: "Dockerfile"
+  DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/ansible-dev-image:$CI_COMMIT_REF_SLUG"
+  DOCKER_RELEASE_IMAGE: "$CI_REGISTRY_IMAGE/ansible-dev-image:$CI_COMMIT_REF_NAME"
 
