@@ -1,4 +1,4 @@
-# ansible-image
+# ansible-image 
 ## Описание
 * Образ основан на alpine
 * Образ содержит ansible и утилиты.
