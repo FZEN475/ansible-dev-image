@@ -18,12 +18,12 @@ RUN apk add --no-cache \
       passlib==1.7.4 \
       jmespath==1.0.1 && \
     ansible-galaxy collection install \
-      community.docker:>=4.8.1 \
-      ansible.posix:>=2.1.0 \
-      kubernetes.core:>=6.2.0 \
-      community.general:>=11.4.0 \
-      community.crypto:>=3.0.4 \
-      community.hashi_vault:>=7.0.0
+      "community.docker:>=4.8.1" \
+      "ansible.posix:>=2.1.0" \
+      "kubernetes.core:>=6.2.0" \
+      "community.general:>=11.4.0" \
+      "community.crypto:>=3.0.4" \
+      "community.hashi_vault:>=7.0.0"
 
 COPY entrypoint.sh /
 COPY ansible.cfg /etc/ansible/ansible.cfg
