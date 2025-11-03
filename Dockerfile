@@ -16,8 +16,8 @@ RUN apk add --no-cache \
       etcd3==0.12.0 \
       protobuf==3.20.1 \
       passlib==1.7.4 \
-      jmespath==1.0.1
-RUN ansible-galaxy collection install \
+      jmespath==1.0.1 && \
+    ansible-galaxy collection install \
       community.docker:>=4.8.1 \
       ansible.posix:>=2.1.0 \
       kubernetes.core:>=6.2.0 \
