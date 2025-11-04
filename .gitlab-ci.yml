@@ -45,7 +45,7 @@ stages:
   - auto-release
 
 variables:
-  CI_DEBUG_TRACE: "true"
+  CI_DEBUG_TRACE: "false"
   CUSTOM_CA_CERTS: "$CI_SERVER_TLS_CA_FILE"
   DOCKER_FILE: "Dockerfile"
   DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/ansible-dev-image:$CI_COMMIT_REF_SLUG"
