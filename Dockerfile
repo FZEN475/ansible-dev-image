@@ -20,7 +20,7 @@ RUN apk add --no-cache \
     ansible-galaxy collection install \
       "community.docker:>=4.8.1" \
       "ansible.posix:>=2.1.0" \
-      "kubernetes.core:>=6.1.0" \
+      "kubernetes.core:==6.1.0" \
       "community.general:>=11.4.0" \
       "community.crypto:>=3.0.4" \
       "community.hashi_vault:>=7.0.0"
