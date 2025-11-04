@@ -15,7 +15,7 @@
 | environment.ANSIBLE_EXTRA_FLAGS    | -vvv                             | Дополнительные флаги для отладки      |
 
 ## Troubleshoots
-
+ 
 <!DOCTYPE html>
 <table>
   <thead>
